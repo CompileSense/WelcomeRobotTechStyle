@@ -1,0 +1,114 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.compilesense.liuyi.welcomerobottechstyle.fragment.NotifyFragment">
+    <ImageView
+        android:src="@drawable/notify_bg1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/tv_notify"
+        android:textColor="#161a20"
+        android:textSize="5.5pt"
+        android:text="FOCUS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="52dp"/>
+    <TextView
+        android:id="@+id/tv_content"
+        android:textColor="#161a20"
+        android:textSize="5pt"
+        android:text="CONTENT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_notify"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/tv_notify"
+        android:layout_marginTop="7dp"/>
+
+    <TextView
+        android:id="@+id/tv_notify_content"
+        android:textColor="#cbd1cc"
+        android:textSize="5pt"
+        android:text="@string/test"
+        android:lineSpacingMultiplier="1.5"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:maxHeight="60dp"
+        android:layout_below="@id/tv_content"
+        android:layout_marginTop="6.5dp"
+        android:layout_alignLeft="@id/tv_content"
+        android:layout_marginLeft="15.5dp"/>
+
+    <TextView
+        android:id="@+id/tv_notify_date"
+        android:textColor="#137796"
+        android:textSize="5pt"
+        android:text="DATE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@id/tv_content"
+        android:layout_marginBottom="14dp"/>
+
+    <TextView
+        android:id="@+id/tv_notify_time"
+        android:textColor="#137796"
+        android:textSize="5pt"
+        android:text="TIME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@id/tv_content"
+        android:layout_marginLeft="96dp"
+        android:layout_marginBottom="14dp"/>
+
+    <TextView
+        android:id="@+id/tv_notify_eta"
+        android:textColor="#137796"
+        android:textSize="5pt"
+        android:text="ETA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@id/tv_content"
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="170dp"/>
+
+    <TextView
+        android:id="@+id/tv_notify_date_value"
+        android:textColor="#c6c6c6"
+        android:textSize="4.5pt"
+        android:text="2016.12.28"
+        android:layout_alignBottom="@id/tv_notify_date"
+        android:layout_toRightOf="@id/tv_notify_date"
+        android:layout_marginLeft="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_notify_time_value"
+        android:textColor="#c6c6c6"
+        android:textSize="4.5pt"
+        android:text="14:00"
+        android:layout_alignBottom="@id/tv_notify_time"
+        android:layout_toRightOf="@id/tv_notify_time"
+        android:layout_marginLeft="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_notify_eta_value"
+        android:textColor="#c6c6c6"
+        android:textSize="4.5pt"
+        android:text="2h 30min"
+        android:layout_alignBottom="@id/tv_notify_eta"
+        android:layout_toRightOf="@id/tv_notify_eta"
+        android:layout_marginLeft="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

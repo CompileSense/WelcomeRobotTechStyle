@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.compilesense.liuyi.welcomerobottechstyle.fragment.VideoFragment">
+    <SurfaceView
+        android:id="@+id/sv"
+        android:layout_margin="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <ImageView
+        android:id="@+id/img_video_bg"
+        android:layout_width="429.5dp"
+        android:layout_height="248dp"
+        android:maxWidth="429.5dp"
+        android:maxHeight="248dp"/>
+</FrameLayout>

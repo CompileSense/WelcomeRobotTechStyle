@@ -1,0 +1,21 @@
+<resources>
+    <string name="camera_ip">192.168.0.65</string>
+    <string name="camera_port">8000</string>
+    <string name="camera_user">admin</string>
+    <string name="camera_password">hk123456</string>
+
+    <string name="api_url">http://192.168.0.62:8889</string>
+    <string name="api_action">/Recognition/RecognitionByArray</string>
+    <string name="api_id">60F2D709-0C08-4C81-9CB6-B3435C86B282</string>
+    <string name="api_secret">3891CD3D5326C50FDEAD27B832A4CE1A</string>
+    <string name="api_group_id">201ec191-6c7b-420c-8eab-34beb6edfd51</string>
+
+    <string name="service_ip">http://192.168.0.97/</string>
+
+    <string name="app_name">WelcomeRobotTechStyle</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="test">研发部召集的产品功能研讨会将会在今天下午2:30在会议室召开,请准时参加。</string>
+</resources>

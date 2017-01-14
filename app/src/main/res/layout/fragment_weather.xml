@@ -1,0 +1,131 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.compilesense.liuyi.welcomerobottechstyle.fragment.WeatherFragment">
+    <ImageView
+        android:id="@+id/img_weather_bg"
+        android:layout_width="291dp"
+        android:layout_height="139.5dp"
+        android:maxWidth="291dp"
+        android:maxHeight="139.5dp"/>
+
+    <TextView
+        android:text="WEATHER"
+        android:textSize="4pt"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_current"
+        android:text="CURRENT"
+        android:textSize="3.5pt"
+        android:textColor="#0981aa"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="57dp"
+        android:layout_marginTop="18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_tomorrow"
+        android:text="TOMORROW"
+        android:textSize="3.5pt"
+        android:textColor="#0981aa"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="178.5dp"
+        android:layout_marginTop="18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <ImageView
+        android:id="@+id/img_weather_ic_current"
+        android:src="@drawable/ic_could"
+        android:layout_alignLeft="@id/tv_current"
+        android:layout_below="@id/tv_current"
+        android:layout_marginTop="12px"
+        android:layout_width="69px"
+        android:layout_height="62px" />
+
+    <TextView
+        android:id="@+id/tv_wind"
+        android:background="#171920"
+        android:gravity="center"
+        android:text="72 μm/m"
+        android:textSize="3.5pt"
+        android:textColor="#63757c"
+        android:layout_width="69px"
+        android:layout_height="19px"
+        android:layout_below="@id/img_weather_ic_current"
+        android:layout_alignLeft="@id/img_weather_ic_current"
+        android:layout_marginTop="12px" />
+
+    <TextView
+        android:id="@+id/tv_current_temp"
+        android:text="23°c"
+        android:textColor="#def9ff"
+        android:textSize="6pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/img_weather_ic_current"
+        android:layout_alignTop="@id/img_weather_ic_current"
+        android:layout_marginLeft="17px"/>
+    <TextView
+        android:id="@+id/tv_current_describe"
+        android:text="MOSTLY CLOUDY"
+        android:textColor="#def9ff"
+        android:textSize="4pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_current_temp"
+        android:layout_alignLeft="@id/tv_current_temp"/>
+    <TextView
+        android:id="@+id/tv_current_notice"
+        android:text="轻度污染"
+        android:textColor="#f8c727"
+        android:textSize="4pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_current_describe"
+        android:layout_alignLeft="@id/tv_current_describe"
+        android:layout_marginTop="2dp"/>
+
+    <ImageView
+        android:id="@+id/img_weather_ic_tomorrow"
+        android:src="@drawable/ic_could"
+        android:layout_alignLeft="@id/tv_tomorrow"
+        android:layout_below="@id/tv_tomorrow"
+        android:layout_marginTop="6dp"
+        android:layout_width="34.5dp"
+        android:layout_height="31dp" />
+
+    <TextView
+        android:id="@+id/tv_tomorrow_temp"
+        android:text="23°c"
+        android:textColor="#def9ff"
+        android:textSize="6pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/img_weather_ic_tomorrow"
+        android:layout_alignTop="@id/img_weather_ic_tomorrow"
+        android:layout_marginLeft="8.5dp"/>
+    <TextView
+        android:id="@+id/tv_tomorrow_describe"
+        android:text="MOSTLY CLOUDY"
+        android:textColor="#def9ff"
+        android:textSize="4pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_tomorrow_temp"
+        android:layout_alignLeft="@id/tv_tomorrow_temp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rc_weather"
+        android:layout_width="204.5dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="85.5dp"
+        android:layout_marginLeft="50.5dp"/>
+</RelativeLayout>

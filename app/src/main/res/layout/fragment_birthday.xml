@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.compilesense.liuyi.welcomerobottechstyle.fragment.BirthdayFragment">
+
+    <ImageView
+        android:src="@drawable/birthday_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/tv_birthday"
+        android:text="BIRTHDAY"
+        android:textColor="#161a20"
+        android:textSize="5pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="33dp"/>
+
+    <LinearLayout
+        android:id="@+id/center_card"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@drawable/birthday_center_card_bg"
+        android:layout_marginLeft="85dp"
+        android:layout_marginTop="23dp"
+        android:layout_width="92dp"
+        android:layout_height="115.5dp" >
+        <ImageView
+            android:id="@+id/img_birthday_center"
+            android:src="@drawable/liux"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="24dp"
+            android:layout_width="46dp"
+            android:layout_height="57dp" />
+        <TextView
+            android:id="@+id/tv_birthday_center_name"
+            android:text="刘翔"
+            android:textColor="#fff"
+            android:textSize="4.5pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_birthday_center_date"
+            android:text="今天生日"
+            android:textColor="#adeaff"
+            android:textSize="4pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="#344353"
+        android:layout_alignLeft="@id/tv_birthday"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="32.5dp"
+        android:layout_width="42.5dp"
+        android:layout_height="71.5dp">
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="#344353"
+        android:layout_alignLeft="@id/tv_birthday"
+        android:layout_marginLeft="149dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="32.5dp"
+        android:layout_width="42.5dp"
+        android:layout_height="71.5dp">
+        
+    </LinearLayout>
+
+
+</RelativeLayout>
