@@ -55,7 +55,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="65dp"
         android:layout_below="@id/img_logo"
-        android:layout_marginTop="6.5dp"
+        android:layout_marginTop="-20dp"
         android:layout_width="181.5dp"
         android:layout_height="181dp">
         <fragment
@@ -110,6 +110,18 @@
     </FrameLayout>
     <FrameLayout
         android:layout_alignParentLeft="true"
+        android:layout_alignBottom="@id/fl_video"
+        android:layout_marginBottom="12dp"
+        android:layout_width="240.5dp"
+        android:layout_height="156dp">
+        <fragment
+            android:id="@+id/fragment_record"
+            android:name="com.compilesense.liuyi.welcomerobottechstyle.fragment.RecordFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_alignParentLeft="true"
         android:layout_marginLeft="125.5dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="28dp"
@@ -148,5 +160,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </FrameLayout>
+    
+    <ImageView
+        android:id="@+id/img_tdc"
+        android:src="@drawable/tdcode"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="22.5dp"
+        android:layout_marginRight="28dp"
+        android:layout_width="65.5dp"
+        android:layout_height="65.5dp" />
 
 </RelativeLayout>

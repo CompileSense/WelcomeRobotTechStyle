@@ -33,6 +33,7 @@ import java.io.LineNumberReader;
  */
 
 public class Utils {
+
     static public int calculateInSampleSize(String imagePath, ImageView imageView){
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;

@@ -31,7 +31,7 @@
             android:id="@+id/img_birthday_center"
             android:src="@drawable/liux"
             android:scaleType="centerCrop"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="15dp"
             android:layout_width="46dp"
             android:layout_height="57dp" />
         <TextView
@@ -57,7 +57,30 @@
         android:layout_marginBottom="32.5dp"
         android:layout_width="42.5dp"
         android:layout_height="71.5dp">
-
+        <ImageView
+            android:id="@+id/img_birthday_left"
+            android:src="@drawable/guojj"
+            android:layout_gravity="left"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="2dp"
+            android:layout_width="72px"
+            android:layout_height="89px" />
+        <TextView
+            android:id="@+id/tv_birthday_left_name"
+            android:layout_gravity="center_horizontal"
+            android:text="郭晶晶"
+            android:textColor="#fff"
+            android:textSize="3.5pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_birthday_left_date"
+            android:layout_gravity="center_horizontal"
+            android:text="今天生日"
+            android:textColor="#adeaff"
+            android:textSize="3pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -68,7 +91,30 @@
         android:layout_marginBottom="32.5dp"
         android:layout_width="42.5dp"
         android:layout_height="71.5dp">
-        
+        <ImageView
+            android:id="@+id/img_birthday_right"
+            android:src="@drawable/yao"
+            android:layout_gravity="right"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="2dp"
+            android:layout_width="72px"
+            android:layout_height="89px" />
+        <TextView
+            android:id="@+id/tv_birthday_right_name"
+            android:layout_gravity="center_horizontal"
+            android:text="姚明"
+            android:textColor="#fff"
+            android:textSize="3.5pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_birthday_right_date"
+            android:layout_gravity="center_horizontal"
+            android:text="今天生日"
+            android:textColor="#adeaff"
+            android:textSize="3pt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 
