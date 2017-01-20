@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.compilesense.liuyi.welcomerobottechstyle.fragment.VisitorFragment">
+    <ImageView
+        android:id="@+id/img_visitor_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <FrameLayout
+        android:id="@+id/fl_visitor_ring_bg"
+        android:background="@drawable/visitor_head_bg"
+        android:layout_marginTop="44dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_width="183dp"
+        android:layout_height="183dp">
+        <FrameLayout
+            android:layout_gravity="center"
+            android:layout_width="140dp"
+            android:layout_height="140dp">
+            <ImageView
+                android:id="@+id/img_visitor_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+    </FrameLayout>
+    <TextView
+        android:id="@+id/tv_visitor_name"
+        android:layout_below="@id/fl_visitor_ring_bg"
+        android:layout_marginTop="54dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="#dfecfc"
+        android:textSize="8pt"
+        android:text="尤烈诺"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_visitor_info"
+        android:layout_below="@id/tv_visitor_name"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="#dfecfc"
+        android:textSize="7pt"
+        android:text="Glasssix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_welcome"
+        android:layout_below="@id/tv_visitor_info"
+        android:layout_marginTop="64dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="#dfecfc"
+        android:textSize="9pt"
+        android:text="WELCOME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

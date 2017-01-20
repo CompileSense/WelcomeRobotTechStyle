@@ -5,7 +5,7 @@
     tools:context="com.compilesense.liuyi.welcomerobottechstyle.fragment.BirthdayFragment">
 
     <ImageView
-        android:src="@drawable/birthday_bg"
+        android:id="@+id/img_birthday_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <TextView
@@ -33,7 +33,9 @@
             android:scaleType="centerCrop"
             android:layout_marginTop="15dp"
             android:layout_width="46dp"
-            android:layout_height="57dp" />
+            android:layout_height="57dp"
+            android:maxWidth="46dp"
+            android:maxHeight="57dp"/>
         <TextView
             android:id="@+id/tv_birthday_center_name"
             android:text="刘翔"
@@ -64,7 +66,9 @@
             android:scaleType="centerCrop"
             android:layout_marginTop="2dp"
             android:layout_width="72px"
-            android:layout_height="89px" />
+            android:layout_height="89px"
+            android:maxWidth="72px"
+            android:maxHeight="89px"/>
         <TextView
             android:id="@+id/tv_birthday_left_name"
             android:layout_gravity="center_horizontal"
@@ -98,7 +102,9 @@
             android:scaleType="centerCrop"
             android:layout_marginTop="2dp"
             android:layout_width="72px"
-            android:layout_height="89px" />
+            android:layout_height="89px"
+            android:maxWidth="72px"
+            android:maxHeight="89px" />
         <TextView
             android:id="@+id/tv_birthday_right_name"
             android:layout_gravity="center_horizontal"

@@ -60,7 +60,7 @@
         android:layout_height="181dp">
         <fragment
             android:id="@+id/fragment_face"
-            android:name="com.compilesense.liuyi.welcomerobottechstyle.activity.FaceFragment"
+            android:name="com.compilesense.liuyi.welcomerobottechstyle.fragment.FaceFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </FrameLayout>
@@ -89,17 +89,18 @@
         android:layout_centerHorizontal="true"
         android:layout_width="429.5dp"
         android:layout_height="248dp">
-        <fragment
-            android:id="@+id/fragment_video"
-            android:name="com.compilesense.liuyi.welcomerobottechstyle.fragment.VideoFragment"
+        <FrameLayout
+            android:id="@+id/fl_video_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+        </FrameLayout>
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/fl_weather"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="34.5dp"
-        android:layout_marginRight="27dp"
+        android:layout_marginRight="18dp"
         android:layout_width="291dp"
         android:layout_height="139.5dp">
         <fragment
@@ -109,6 +110,7 @@
             android:layout_height="match_parent"/>
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/fl_record"
         android:layout_alignParentLeft="true"
         android:layout_alignBottom="@id/fl_video"
         android:layout_marginBottom="12dp"
@@ -121,6 +123,7 @@
             android:layout_height="match_parent"/>
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/fl_notify"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="125.5dp"
         android:layout_alignParentBottom="true"
@@ -134,9 +137,10 @@
             android:layout_height="match_parent"/>
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/fl_birthday"
         android:layout_alignParentRight="true"
-        android:layout_alignBottom="@id/fl_video"
-        android:layout_marginBottom="12dp"
+        android:layout_below="@id/fl_weather"
+        android:layout_marginTop="46dp"
         android:layout_marginRight="12dp"
         android:layout_width="271dp"
         android:layout_height="144.5dp">
@@ -148,6 +152,7 @@
     </FrameLayout>
     
     <FrameLayout
+        android:id="@+id/fl_time"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="16dp"
         android:layout_alignParentRight="true"
@@ -163,12 +168,21 @@
     
     <ImageView
         android:id="@+id/img_tdc"
-        android:src="@drawable/tdcode"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="22.5dp"
         android:layout_marginRight="28dp"
         android:layout_width="65.5dp"
         android:layout_height="65.5dp" />
+
+    <FrameLayout
+        android:id="@+id/fl_visitor_container"
+        android:orientation="horizontal"
+        android:background="#ee333333"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/container_visitor"/>
+    </FrameLayout>
 
 </RelativeLayout>

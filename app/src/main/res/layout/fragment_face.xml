@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.compilesense.liuyi.welcomerobottechstyle.activity.FaceFragment">
+    tools:context="com.compilesense.liuyi.welcomerobottechstyle.fragment.FaceFragment">
 
     <com.compilesense.liuyi.welcomerobottechstyle.view.FaceView
         android:id="@+id/face_view"

@@ -1,6 +1,9 @@
 package com.compilesense.liuyi.welcomerobottechstyle.fragment;
 
 
+import android.animation.ObjectAnimator;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,12 +15,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.compilesense.liuyi.welcomerobottechstyle.R;
 import com.compilesense.liuyi.welcomerobottechstyle.application.WRApplication;
-import com.compilesense.liuyi.welcomerobottechstyle.util.Utils;
-import com.hikvision.netsdk.ExceptionCallBack;
 import com.hikvision.netsdk.HCNetSDK;
 import com.hikvision.netsdk.NET_DVR_DEVICEINFO_V30;
 import com.hikvision.netsdk.NET_DVR_PREVIEWINFO;
@@ -28,6 +28,9 @@ import org.MediaPlayer.PlayM4.PlayerCallBack;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,15 +47,29 @@ public class VideoFragment extends Fragment {
     String cameraIP = null,cameraAccount = null,cameraPassword = null;
     int cameraPort = -1;
 
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+
     private NET_DVR_DEVICEINFO_V30 m_oNetDvrDeviceInfoV30;//设备信息
     private int m_iStartChan = 0;//起始通道
     private int m_iChanNum = 0;//通道个数
     int playId = -1;//网络库PlayId
     int logId = -1;//网络库登录Id
 
-    SurfaceView mSurfaceView;//显示摄像头预览
+    public SurfaceView mSurfaceView;//显示摄像头预览
     SurfaceHolder mSurfaceHolder;
     int m_iPort = -1;//显示通道
+
+    Timer timer;
+
+    byte[] data;
+    int params1;
+    int params2;
+    int params3;
+
+    public static VideoFragment newInstance(){
+        Log.d(TAG,"newInstance");
+        return new VideoFragment();
+    }
     public VideoFragment() {
         // Required empty public constructor
     }
@@ -61,7 +78,7 @@ public class VideoFragment extends Fragment {
         VideoFragment fragment = new VideoFragment();
         Bundle args = new Bundle();
         args.putString(ARG_IP, ip);
-        args.putInt(ARG_PORT,port);
+        args.putInt(ARG_PORT, port);
         args.putString(ARG_ACCOUNT, account);
         args.putString(ARG_PASSWORD, password);
         fragment.setArguments(args);
@@ -71,6 +88,7 @@ public class VideoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG,"onCreate");
         if (getArguments() != null) {
             cameraIP = getArguments().getString(ARG_IP);
             cameraPort = getArguments().getInt(ARG_PORT);
@@ -83,35 +101,38 @@ public class VideoFragment extends Fragment {
             cameraAccount = app.cameraAccount;
             cameraPassword = app.cameraPassword;
         }
-        initHKSDK();
+        timer = new Timer();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG,"onCreateView");
         return inflater.inflate(R.layout.fragment_video, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d(TAG,"onActivityCreated");
         //video bg
-        ImageView videoBg = (ImageView) getView().findViewById(R.id.img_video_bg);
-        Utils.bitmapIntoImageView(getContext(), videoBg, R.drawable.video_bg2,2);
+//        ImageView videoBg = (ImageView) getView().findViewById(R.id.img_video_bg);
+//        Utils.bitmapIntoImageView(getContext(), videoBg, R.drawable.video_bg2,2);
         initSurfaceView();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG,"onStart");
         previewRestart();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        releaseHKDSK();
+        logoutDevice(logId);
     }
 
     //启动摄像头:登录、开启预览
@@ -136,6 +157,50 @@ public class VideoFragment extends Fragment {
     //初始化SurfaceView
     void initSurfaceView(){
         mSurfaceView = (SurfaceView) getView().findViewById(R.id.sv);
+
+//        mSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+//            @Override
+//            public void surfaceCreated(SurfaceHolder holder) {
+//                mSurfaceHolder = holder;
+//                starNetWorkCamera();
+//                wkorking = true;
+//                new Thread(drawWorker).start();
+//                //开启工作线程并设置预览区域和对调
+////                Worker.getInstance()
+////                        .setCallBack(new Worker.IFaceDetectionCallBack() {
+////                            @Override
+////                            public void catchFace(Mat[] faces, int faceCount) {
+////                                if (faces != null && faceCount > 0 ){
+////                                    if (!isRecognizing){
+////                                        isRecognizing = true;
+////                                        Message message = new Message();
+////                                        message.what = MESSAGE_CATCH_FACE;
+////                                        message.obj = faces;
+////                                        message.arg1 = faceCount;
+////                                        mHandler.sendMessage(message);
+////                                    }
+////                                }
+////                            }
+////                        })
+////                        .setSurfaceHolder(holder,mSurfaceView)
+////                        .loadFaceDetector(MainActivity.this)
+////                        .startWork();
+//            }
+//
+//            @Override
+//            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+//                mSurfaceHolder = holder;
+//            }
+//
+//            @Override
+//            public void surfaceDestroyed(SurfaceHolder holder) {
+////                Worker.getInstance().stopWork();
+//                wkorking = false;
+//                mSurfaceHolder = null;
+//                stopSinglePreview();
+//            }
+//        });
+
         mSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
@@ -155,6 +220,8 @@ public class VideoFragment extends Fragment {
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                mSurfaceHolder = holder;
+                Log.d(TAG,"surfaceChanged");
             }
 
             @Override
@@ -173,24 +240,6 @@ public class VideoFragment extends Fragment {
                 stopSinglePreview();
             }
         });
-    }
-
-    //启动海康网络SDK
-    void initHKSDK() {
-        //init net sdk
-        if (!HCNetSDK.getInstance().NET_DVR_Init()) {
-            Log.e(TAG, "HCNetSDK init is failed!");
-            return;
-        }
-        setExceptionCallBack();
-
-//        HCNetSDK.getInstance().NET_DVR_SetLogToFile(3, "/mnt/sdcard/sdklog/",true);
-    }
-
-    //释放海康网络SDK
-    void releaseHKDSK() {
-        // release net SDK resource
-        HCNetSDK.getInstance().NET_DVR_Cleanup();
     }
 
     //登录设备
@@ -282,24 +331,7 @@ public class VideoFragment extends Fragment {
         m_iPort = -1;
         Log.d(TAG,"停止play playId:" + playId + ", port: " + m_iPort);
     }
-    //设置网络库错误回调
-    void setExceptionCallBack() {
-        ExceptionCallBack oexceptionCbf = new ExceptionCallBack() {
-            public void fExceptionCallBack(int iType, int iUserID, int iHandle) {
-                System.out.println("recv exception, type:" + iType);
-            }
-        };
 
-        if (oexceptionCbf == null) {
-            Log.e(TAG, "ExceptionCallBack object is failed!");
-            return;
-        }
-
-        if (!HCNetSDK.getInstance().NET_DVR_SetExceptionCallBack(oexceptionCbf)) {
-            Log.e(TAG, "NET_DVR_SetExceptionCallBack is failed!");
-            return;
-        }
-    }
 
     //处理网络库中的数据
     void processRealData(int iDataType, byte[] pDataBuffer, int iDataSize, int iStreamMode){
@@ -331,13 +363,17 @@ public class VideoFragment extends Fragment {
 //                if (!Player.getInstance().setDecodeCB(m_iPort, new PlayerCallBack.PlayerDecodeCB() {
 //                    @Override
 //                    public void onDecode(int i, byte[] bytes, int i1, int i2, int i3, int i4, int i5, int i6) {
-//
+//                        synchronized (this){
+//                            data = bytes;
+//                            params1 = i5;//type
+//                            params2 = i3;//h
+//                            params3 = i2;//w
+//                        }
 //                    }
 //                })) {
 //                    Log.e(TAG, "setDecodeCB failed");
 //                    return;
 //                }
-
                 if (!Player.getInstance().setDisplayCB(m_iPort, new PlayerCallBack.PlayerDisplayCB() {
                     @Override
                     public void onDisplay(int i, byte[] bytes, int i1, int i2, int i3, int i4, int i5, int i6) {
@@ -355,12 +391,6 @@ public class VideoFragment extends Fragment {
                 }
                 if (!Player.getInstance().play(m_iPort, mSurfaceView.getHolder())) {
                     Log.e(TAG, "play failed");
-
-                    return;
-                }
-                if(!Player.getInstance().playSound(m_iPort))
-                {
-                    Log.e(TAG, "playSound failed with error code:" + Player.getInstance().getLastError(m_iPort));
                     return;
                 }
             }
@@ -368,30 +398,78 @@ public class VideoFragment extends Fragment {
             if (!Player.getInstance().inputData(m_iPort, pDataBuffer, iDataSize))
             {
 //		    		Log.e(TAG, "inputData failed with: " + Player.getInstance().getLastError(m_iPort));
-                for(int i = 0; i < 4000 && playId >=0 ; i++)
-                {
-                    if (!Player.getInstance().inputData(m_iPort, pDataBuffer, iDataSize)){
-                        //                        Log.e(TAG, "inputData failed with: " + Player.getInstance().getLastError(m_iPort));
-                    }
-                    else
-                        break;
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
+//                for(int i = 0; i < 4000 && playId >=0 ; i++)
+//                {
+//                    if (!Player.getInstance().inputData(m_iPort, pDataBuffer, iDataSize)){
+//                        //                        Log.e(TAG, "inputData failed with: " + Player.getInstance().getLastError(m_iPort));
+//                    }
+//                    else
+//                        break;
+//                    try {
+//                        Thread.sleep(10);
+//                    } catch (InterruptedException e) {
+//                        // TODO Auto-generated catch block
+//                        e.printStackTrace();
+//                    }
+//                }
             }
 
         }
     }
 
+
+//    boolean wkorking = false;
+//    Bitmap bitmapCache;
+//    Runnable drawWorker = new Runnable() {
+//        @Override
+//        public void run() {
+//            while (wkorking){
+//
+//                if (data == null) {
+//                    continue;
+//                }
+//                if (params1 != VideoFrame.TYPE_YV12) {
+//                    Log.e("VideoFrame", "srcType != TYPE_YV12");
+//                    continue;
+//                }
+//                VideoFrame videoFrame = new VideoFrame(params1, params2, params3);
+//                synchronized (this) {
+//                    videoFrame.putData(data);
+//                }
+//                videoFrame.useData();
+//                Mat rgba = videoFrame.rgba();
+//
+//                if (bitmapCache == null){
+//                    bitmapCache = Bitmap.createBitmap(rgba.width(),rgba.height(), Bitmap.Config.ARGB_8888);
+//                    Log.d(TAG,"cacheBitmap:"+bitmapCache.getWidth()+"*"+bitmapCache.getHeight());
+//                    Log.d(TAG,"mRgba:"+rgba.width()+"*"+rgba.height());
+//                }
+//                if (bitmapCache.getHeight() != rgba.height() || bitmapCache.getWidth() != rgba.width()){
+//                    Log.d(TAG,"cacheBitmap:"+bitmapCache.getWidth()+"*"+bitmapCache.getHeight());
+//                    Log.d(TAG,"mRgba:"+rgba.width()+"*"+rgba.height());
+//                    bitmapCache.recycle();
+//                    bitmapCache = Bitmap.createBitmap(rgba.width(),rgba.height(), Bitmap.Config.ARGB_8888);
+//                }
+//                org.opencv.android.Utils.matToBitmap(rgba,bitmapCache);
+//                Canvas canvas = mSurfaceHolder.lockCanvas();
+//                if (canvas == null){
+//                    Log.e(TAG,"canvas == null");
+//                    continue;
+//                }
+//                canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
+//                canvas.drawBitmap(bitmapCache,null,new android.graphics.Rect(0, 0, bitmapCache.getWidth(), bitmapCache.getHeight()),null);
+//                mSurfaceHolder.unlockCanvasAndPost(canvas);
+//                videoFrame.release();
+//            }
+//        }
+//    };
+
+
     boolean previewShowing = false;
 
     void previewRestart(){
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+
+        executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 if (!previewShowing){
@@ -414,8 +492,7 @@ public class VideoFragment extends Fragment {
                         startSinglePreview();
                     }
                 }
-
             }
-        },1000,1000*60*30);
+        }, 1000L,1000*60*30L, TimeUnit.MILLISECONDS);
     }
 }

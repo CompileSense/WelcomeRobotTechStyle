@@ -3,8 +3,10 @@ package com.compilesense.liuyi.welcomerobottechstyle.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.Process;
 import android.util.Log;
 
+import com.compilesense.liuyi.welcomerobottechstyle.activity.MainActivity;
 import com.compilesense.liuyi.welcomerobottechstyle.javabean.UISettingBean;
 import com.compilesense.liuyi.welcomerobottechstyle.javabean.VisitorsInfoBean;
 import com.compilesense.liuyi.welcomerobottechstyle.util.Utils;
@@ -16,6 +18,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class UDPConnectService extends Service {
     private static final String TAG = "UDPConnectService";
@@ -77,7 +80,7 @@ public class UDPConnectService extends Service {
         public void run() {
             InetAddress local = null;
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
                 local = InetAddress.getByName("localhost"); // 本机测试
                 Log.d(TAG,"test:"+"已找到本地监听端");
                 String test = VisitorsInfoBean.testJsonString1;
@@ -108,16 +111,16 @@ public class UDPConnectService extends Service {
                 socket3.send(packet3);
                 Log.e(TAG,"发送测试广播3");
                 socket3.close();
-
-                Thread.sleep(1000);
-                test = VisitorsInfoBean.testJsonString3;
-                test = test.trim();
-                buffer = test.getBytes();
-                DatagramSocket socket4 = new DatagramSocket();
-                DatagramPacket packet4 = new DatagramPacket(buffer, buffer.length, local, SERVER_PORT_TEST);
-                socket4.send(packet4);
-                Log.e(TAG,"发送测试广播4");
-                socket4.close();
+//
+//                Thread.sleep(1000);
+//                test = VisitorsInfoBean.testJsonString3;
+//                test = test.trim();
+//                buffer = test.getBytes();
+//                DatagramSocket socket4 = new DatagramSocket();
+//                DatagramPacket packet4 = new DatagramPacket(buffer, buffer.length, local, SERVER_PORT_TEST);
+//                socket4.send(packet4);
+//                Log.e(TAG,"发送测试广播4");
+//                socket4.close();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -130,11 +133,12 @@ public class UDPConnectService extends Service {
     private class ConnectWorker implements Runnable{
         @Override
         public void run() {
+            android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
             try {
-                serverAddress = InetAddress.getByName(serviceIp);
+                serverAddress = InetAddress.getByName(SERVER_IP_TEST);
                 System.out.println("Client: Start connecting\n");
-//                socket = new DatagramSocket(servicePort);
-                socket = new DatagramSocket(servicePort);
+
+                socket = new DatagramSocket(SERVER_PORT_TEST);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -147,8 +151,9 @@ public class UDPConnectService extends Service {
 
 //            Timer testT = new Timer();
 //            testT.schedule(mTestTimerTask, 2000);
+
 //            Timer timerT2 = new Timer();
-//            timerT2.schedule(mTestTimerTask2, 1000, 1500);
+//            timerT2.schedule(mTestTimerTask2, 1000, 4000);
 
             // 接收UDP广播，有的手机不支持
             while (receiving) {
@@ -182,7 +187,7 @@ public class UDPConnectService extends Service {
                             return;
                         }
                         Log.d(TAG,"uiSetting发送广播");
-                        sendData2Activity(uiSettingBeanJsonString, 0);
+                        sendData2Activity(uiSettingBeanJsonString, true);
                     }
                 });
                 if (!handleResult){
@@ -236,6 +241,7 @@ public class UDPConnectService extends Service {
 
         if (mConnectWorkerThread == null){
             mConnectWorkerThread = new Thread(mConnectWorker);
+            mConnectWorkerThread.setPriority(3);
             mConnectWorkerThread.start();
         }
 
@@ -283,18 +289,18 @@ public class UDPConnectService extends Service {
         socket.close();
     }
 
-    private void sendData2Activity(String params, int i){
-//        Intent intent = new Intent();
-//        intent.setAction(MainActivity.VisitorArriveBroadcastReceiver.ACTION);
-//        intent.putExtra(MainActivity.VisitorArriveBroadcastReceiver.KEY_UI_UPDATA, params);
-//        sendBroadcast(intent);
+    private void sendData2Activity(String params, boolean UIchangee){
+        Intent intent = new Intent();
+        intent.setAction(MainActivity.VisitorArriveBroadcastReceiver.ACTION);
+        intent.putExtra(MainActivity.VisitorArriveBroadcastReceiver.KEY_UI_UPDATA, params);
+        sendBroadcast(intent);
     }
 
     private void sendData2Activity(String personInfoJson){
-//        Intent intent = new Intent();
-//        intent.setAction(MainActivity.VisitorArriveBroadcastReceiver.ACTION);
-//        intent.putExtra(MainActivity.VisitorArriveBroadcastReceiver.KEY_PERSON_INFO, personInfoJson);
-//        sendBroadcast(intent);
+        Intent intent = new Intent();
+        intent.setAction(MainActivity.VisitorArriveBroadcastReceiver.ACTION);
+        intent.putExtra(MainActivity.VisitorArriveBroadcastReceiver.KEY_PERSON_INFO, personInfoJson);
+        sendBroadcast(intent);
     }
 
 //    class VisitorArriveBean {

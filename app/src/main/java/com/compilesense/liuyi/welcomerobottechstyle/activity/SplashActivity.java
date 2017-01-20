@@ -27,6 +27,9 @@ import com.compilesense.liuyi.welcomerobottechstyle.network.LocationInfoFetch;
 import com.compilesense.liuyi.welcomerobottechstyle.service.UDPConnectService;
 import com.compilesense.liuyi.welcomerobottechstyle.util.Utils;
 
+import java.util.TimerTask;
+
+
 public class SplashActivity extends AppCompatActivity {
     private final static String TAG = "SplashActivity";
     private final static int REQUEST_PERMISSION = 111;
@@ -47,8 +50,9 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        startNext();
-//        checkPermissionAndDoNext();
+//        startNext();
+
+        checkPermissionAndDoNext();
     }
 
     @Override
@@ -88,7 +92,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (info.getServiceIp() == null || info.getServiceIp().equals("") || info.getServicePort() == -1){
                     Toast.makeText(SplashActivity.this, "未找到摄像头", Toast.LENGTH_LONG).show();
                 }else {
-//                    startConnectService(info.getServiceIp(), info.getServicePort());
+                    startConnectService(info.getServiceIp(), info.getServicePort());
                 }
                 cameraIP = info.getCanmeraIp();
                 cameraPort = info.getCanmeraPort();
@@ -190,10 +194,10 @@ public class SplashActivity extends AppCompatActivity {
     private void startMainActivity(){
 
         //test
-        cameraIP=getString(R.string.camera_ip);//ip
-        cameraPort= Integer.parseInt(getString(R.string.camera_port));//端口
-        cameraAccount=getString(R.string.camera_user);//账户
-        cameraPassword=getString(R.string.camera_password);//密码
+//        cameraIP=getString(R.string.camera_ip);//ip
+//        cameraPort= Integer.parseInt(getString(R.string.camera_port));//端口
+//        cameraAccount=getString(R.string.camera_user);//账户
+//        cameraPassword=getString(R.string.camera_password);//密码
 
         String[] cameraParams = {
                 cameraIP,//ip

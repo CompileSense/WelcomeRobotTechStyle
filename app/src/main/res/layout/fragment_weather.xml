@@ -46,9 +46,11 @@
         android:src="@drawable/ic_could"
         android:layout_alignLeft="@id/tv_current"
         android:layout_below="@id/tv_current"
-        android:layout_marginTop="12px"
-        android:layout_width="69px"
-        android:layout_height="62px" />
+        android:layout_marginTop="6dp"
+        android:layout_width="34.5dp"
+        android:layout_height="31dp"
+        android:maxWidth="34.5dp"
+        android:maxHeight="31dp"/>
 
     <TextView
         android:id="@+id/tv_wind"
@@ -87,7 +89,7 @@
         android:text="轻度污染"
         android:textColor="#f8c727"
         android:textSize="4pt"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_current_describe"
         android:layout_alignLeft="@id/tv_current_describe"
@@ -100,7 +102,9 @@
         android:layout_below="@id/tv_tomorrow"
         android:layout_marginTop="6dp"
         android:layout_width="34.5dp"
-        android:layout_height="31dp" />
+        android:layout_height="31dp"
+        android:maxWidth="34.5dp"
+        android:maxHeight="31dp"/>
 
     <TextView
         android:id="@+id/tv_tomorrow_temp"

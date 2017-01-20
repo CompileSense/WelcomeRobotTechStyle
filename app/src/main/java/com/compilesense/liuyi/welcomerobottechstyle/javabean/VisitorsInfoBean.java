@@ -23,7 +23,7 @@ public class VisitorsInfoBean {
             "\t\"message\":{\n" +
             "\t    \"visitors\":[\n" +
             "    \t\t{\n" +
-            "    \t\t    \"personType\":0,\n" +
+            "    \t\t    \"personType\":1,\n" +
             "    \t\t\t\"personId\":\"2\"\n" +
             "    \t\t}\n" +
             "    \t]\n" +

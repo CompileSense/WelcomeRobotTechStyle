@@ -69,6 +69,7 @@ public class Utils {
     }
 
     static public int calculateInSampleSize(Context context, int imageRes, ImageView imageView){
+
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(context.getResources(),imageRes, options);
@@ -97,6 +98,9 @@ public class Utils {
     }
 
     public static Bitmap bitmapIntoImageView(Context context,ImageView imageView,int resId){
+        if (context == null){
+            return null;
+        }
         int sampleSize = Utils.calculateInSampleSize(context, resId, imageView);
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = sampleSize;
@@ -106,6 +110,9 @@ public class Utils {
     }
 
     public static Bitmap bitmapIntoImageView(Context context,ImageView imageView,int resId,int inSampleSize){
+        if (context == null){
+            return null;
+        }
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = inSampleSize;
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),resId,options);

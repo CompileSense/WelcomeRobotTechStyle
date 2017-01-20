@@ -1,4 +1,4 @@
-package com.compilesense.liuyi.welcomerobottechstyle.activity;
+package com.compilesense.liuyi.welcomerobottechstyle.fragment;
 
 
 import android.graphics.Bitmap;

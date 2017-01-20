@@ -17,6 +17,7 @@
     <application
         android:name=".application.WRApplication"
         android:allowBackup="true"
+        android:largeHeap="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -34,6 +35,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity"/>
+
+        <service android:name=".service.UDPConnectService"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 
 </manifest>

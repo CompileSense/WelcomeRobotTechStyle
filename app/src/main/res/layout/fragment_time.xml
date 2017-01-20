@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <TextView
+        android:id="@+id/tv_time"
         android:text="11:30"
         android:textSize="9pt"
         android:textColor="#fff"
@@ -17,11 +18,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
-        android:text="Saturday,june 27"
+        android:id="@+id/tv_date"
+        android:text="周一,june 27"
         android:textSize="4pt"
         android:textColor="#fffffd"
         android:layout_marginTop="90dp"
-        android:layout_marginLeft="38dp"
+        android:layout_marginLeft="45dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>
