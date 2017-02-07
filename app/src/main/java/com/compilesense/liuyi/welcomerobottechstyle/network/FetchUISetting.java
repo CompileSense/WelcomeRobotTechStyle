@@ -24,10 +24,41 @@ public class FetchUISetting {
         return instance;
     }
 
+    public void fetchTodayRecord(Context context, final TodayRecordListner listner){
+        String url = context.getString(R.string.service_ip)+"Services/TVServices.ashx?action=TotalRecognition";
+        Log.d(TAG,"fetchTodayRecord url:"+url);
+        StringRequest request = new StringRequest(url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        try {
+                            TodayRecordResponse recordResponse = gson.fromJson(response,TodayRecordResponse.class);
+                            if (recordResponse.getStatus().equals("successful")){
+                                listner.get(recordResponse.getTotal());
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        );
+        WRApplication app = (WRApplication) context.getApplicationContext();
+        app.addRequest(request);
+    }
+
+
+
     public void fetch(Context context, final UISettingListener listener){
 //        String url = "http://192.168.0.62:9002/"+"Services/TVServices.ashx?action=GetUIInfo&clientId=00:9e:c8:8c:5e:12";
         String url = context.getString(R.string.service_ip)+"Services/TVServices.ashx?action=GetUIInfo&clientId="+ Utils.getMac();
-        Log.e(TAG,"url:"+url);
+        Log.d(TAG,"url:"+url);
         StringRequest request = new StringRequest(
                 url,
                 new Response.Listener<String>() {
@@ -58,6 +89,37 @@ public class FetchUISetting {
 
     public interface UISettingListener{
         void get(UISettingHttpBean bean);
+    }
+
+    public interface TodayRecordListner{
+        void get(String todayRecord);
+    }
+
+    public class TodayRecordResponse{
+
+        /**
+         * status : successful
+         * total : 0
+         */
+
+        private String status;
+        private String total;
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getTotal() {
+            return total;
+        }
+
+        public void setTotal(String total) {
+            this.total = total;
+        }
     }
 
 }

@@ -75,7 +75,7 @@ public class TimeFragment extends Fragment {
     private String[] getDate(){
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE,MMMMM dd", Locale.CHINA);
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm",Locale.CANADA);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm",Locale.CHINA);
         String dateString = dateFormat.format(date);
         String timeString = timeFormat.format(date);
         return new String[]{timeString,dateString};

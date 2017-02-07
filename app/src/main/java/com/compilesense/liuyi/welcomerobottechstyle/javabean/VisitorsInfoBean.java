@@ -13,7 +13,7 @@ public class VisitorsInfoBean {
             "\t    \"visitors\":[\n" +
             "    \t\t{\n" +
             "    \t\t    \"personType\":0,\n" +
-            "    \t\t\t\"personId\":\"1\"\n" +
+            "    \t\t\t\"personId\":\"60\"\n" +
             "    \t\t}\n" +
             "    \t]\n" +
             "\t}\n" +
@@ -23,8 +23,8 @@ public class VisitorsInfoBean {
             "\t\"message\":{\n" +
             "\t    \"visitors\":[\n" +
             "    \t\t{\n" +
-            "    \t\t    \"personType\":1,\n" +
-            "    \t\t\t\"personId\":\"2\"\n" +
+            "    \t\t    \"personType\":0,\n" +
+            "    \t\t\t\"personId\":\"61\"\n" +
             "    \t\t}\n" +
             "    \t]\n" +
             "\t}\n" +
@@ -35,7 +35,7 @@ public class VisitorsInfoBean {
             "\t    \"visitors\":[\n" +
             "    \t\t{\n" +
             "    \t\t    \"personType\":0,\n" +
-            "    \t\t\t\"personId\":\"3\"\n" +
+            "    \t\t\t\"personId\":\"62\"\n" +
             "    \t\t}\n" +
             "    \t]\n" +
             "\t}\n" +

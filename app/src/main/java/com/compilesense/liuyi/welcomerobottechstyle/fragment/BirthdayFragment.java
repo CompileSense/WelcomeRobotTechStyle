@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.compilesense.liuyi.welcomerobottechstyle.R;
 import com.compilesense.liuyi.welcomerobottechstyle.javabean.UISettingHttpBean;
 import com.compilesense.liuyi.welcomerobottechstyle.util.Utils;
+import com.compilesense.liuyi.welcomerobottechstyle.view.PicassoCircleImageTransformation;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -59,5 +61,27 @@ public class BirthdayFragment extends Fragment {
         tvDateCenter.setText(personBirthdayBeanList.get(1).getPersonBirth());
         tvNameRight.setText(personBirthdayBeanList.get(2).getPersonName());
         tvDateRight.setText(personBirthdayBeanList.get(2).getPersonBirth());
+        String urlBase = getString(R.string.service_ip);
+        String url1 = personBirthdayBeanList.get(0).getPersonImgPath();
+        if (url1 != null && url1.equals("")){
+            Picasso.with(getContext())
+                    .load(urlBase + url1)
+                    .resizeDimen(imgLeft.getMaxWidth(),imgLeft.getMaxHeight())
+                    .into(imgLeft);
+        }
+        String url2 = personBirthdayBeanList.get(1).getPersonImgPath();
+        if (url2 != null && url2.equals("")){
+            Picasso.with(getContext())
+                    .load(urlBase + url2)
+                    .resizeDimen(imgLeft.getMaxWidth(),imgLeft.getMaxHeight())
+                    .into(imgCenter);
+        }
+        String url3 = personBirthdayBeanList.get(2).getPersonImgPath();
+        if (url3 != null && url3.equals("")){
+            Picasso.with(getContext())
+                    .load(urlBase + url3)
+                    .resizeDimen(imgLeft.getMaxWidth(),imgLeft.getMaxHeight())
+                    .into(imgRight);
+        }
     }
 }

@@ -151,6 +151,7 @@ public class UISettingBean {
         public static class PersonBirthdayBean {
             private String personName;
             private String personBirth;
+            private String personImgPath;
 
             public void setPersonName(String personName) {
                 this.personName = personName;
@@ -160,12 +161,20 @@ public class UISettingBean {
                 this.personBirth = personBirth;
             }
 
+            public void setPersonImgPath(String personImgPath) {
+                this.personImgPath = personImgPath;
+            }
+
             public String getPersonName() {
                 return personName;
             }
 
             public String getPersonBirth() {
                 return personBirth;
+            }
+
+            public String getPersonImgPath() {
+                return personImgPath;
             }
         }
     }

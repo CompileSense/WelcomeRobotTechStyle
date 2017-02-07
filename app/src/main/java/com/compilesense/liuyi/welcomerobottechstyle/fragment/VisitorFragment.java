@@ -84,7 +84,6 @@ public class VisitorFragment extends Fragment {
             Utils.bitmapIntoImageView(getContext(),imgBg,R.drawable.visitor_bg2,4);
         }
 
-
         imgHeader = (ImageView) getView().findViewById(R.id.img_visitor_head);
         String url = "http://imgsrc.baidu.com/forum/w%3D580/sign=2ba75b788882b9013dadc33b438ca97e/d8828ceef01f3a29c9aea5919b25bc315d607c65.jpg";
         Picasso.with(getContext())
@@ -99,7 +98,6 @@ public class VisitorFragment extends Fragment {
         if (type == VISITOR_TYPE_STAFF){
             tvNotice = (TextView) getView().findViewById(R.id.tv_person_notice);
         }
-
     }
 
     private void fetchVisitorInfo(){
@@ -128,6 +126,7 @@ public class VisitorFragment extends Fragment {
                                 String url = getString(R.string.service_ip)+imageUrl;
                                 Picasso.with(getContext())
                                         .load(url)
+                                        .resizeDimen(R.dimen.visitor_header_size,R.dimen.visitor_header_size)
                                         .transform(new PicassoCircleImageTransformation())
                                         .into(imgHeader);
                             }
@@ -154,6 +153,7 @@ public class VisitorFragment extends Fragment {
                                 String url = getString(R.string.service_ip)+imageUrl;
                                 Picasso.with(getContext())
                                         .load(url)
+                                        .resizeDimen(R.dimen.visitor_header_size,R.dimen.visitor_header_size)
                                         .transform(new PicassoCircleImageTransformation())
                                         .into(imgHeader);
                             }

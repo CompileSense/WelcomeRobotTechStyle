@@ -3,7 +3,6 @@ package com.compilesense.liuyi.welcomerobottechstyle.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.Process;
 import android.util.Log;
 
 import com.compilesense.liuyi.welcomerobottechstyle.activity.MainActivity;
@@ -18,7 +17,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class UDPConnectService extends Service {
     private static final String TAG = "UDPConnectService";
@@ -36,8 +34,7 @@ public class UDPConnectService extends Service {
     private InetAddress serverAddress;
 //    private WifiManager.MulticastLock lock;
     private boolean receiving = false;
-    
-    private TimerTask mHeartBeatTask = null;
+
     private Timer mHeartBeatTimer;
     class HeartBeatTask extends TimerTask {
         @Override
@@ -48,34 +45,37 @@ public class UDPConnectService extends Service {
                     servicePort);
             try {
                 socket.send(packet);
-//                Log.d(TAG,"发送UDP心跳广播,address:"+serverAddress+",servicePort:"+servicePort);
+                Log.d(TAG,"发送UDP心跳广播,address:"+serverAddress+",servicePort:"+servicePort);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private TimerTask mTestTimerTask = new TimerTask() {
-        @Override
-        public void run() {
-            InetAddress local = null;
-            try {
-                local = InetAddress.getByName("localhost"); // 本机测试
-                Log.d(TAG,"test:"+"已找到本地监听端");
-                String test = UISettingBean.testJsonString;
-                test = test.trim();
-                byte[] buffer = test.getBytes();
-                DatagramSocket socket = new DatagramSocket();
-                DatagramPacket packet = new DatagramPacket(buffer, buffer.length, local, SERVER_PORT_TEST);
-                socket.send(packet);
-                socket.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };
+//    private TimerTask mTestTimerTask = new TimerTask() {
+//        @Override
+//        public void run() {
+//            InetAddress local = null;
+//            try {
+//                local = InetAddress.getByName("localhost"); // 本机测试
+//                Log.d(TAG,"test:"+"已找到本地监听端");
+//                String test = UISettingBean.testJsonString;
+//                test = test.trim();
+//                byte[] buffer = test.getBytes();
+//                DatagramSocket socket = new DatagramSocket();
+//                DatagramPacket packet = new DatagramPacket(buffer, buffer.length, local, SERVER_PORT_TEST);
+//                socket.send(packet);
+//                socket.close();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    };
 
-    private TimerTask mTestTimerTask2 = new TimerTask() {
+    private Timer mVisitorTestTimer;
+
+    private class VisitorTestTimerTask extends TimerTask{
+
         @Override
         public void run() {
             InetAddress local = null;
@@ -111,49 +111,90 @@ public class UDPConnectService extends Service {
                 socket3.send(packet3);
                 Log.e(TAG,"发送测试广播3");
                 socket3.close();
-//
-//                Thread.sleep(1000);
-//                test = VisitorsInfoBean.testJsonString3;
-//                test = test.trim();
-//                buffer = test.getBytes();
-//                DatagramSocket socket4 = new DatagramSocket();
-//                DatagramPacket packet4 = new DatagramPacket(buffer, buffer.length, local, SERVER_PORT_TEST);
-//                socket4.send(packet4);
-//                Log.e(TAG,"发送测试广播4");
-//                socket4.close();
-
-            } catch (Exception e) {
+            }catch (Exception e){
                 e.printStackTrace();
             }
         }
-    };
+    }
+//    private TimerTask mTestTimerTask2 = new TimerTask() {
+//        @Override
+//        public void run() {
+//            InetAddress local = null;
+//            try {
+//                Thread.sleep(1000);
+//                local = InetAddress.getByName("localhost"); // 本机测试
+//                Log.d(TAG,"test:"+"已找到本地监听端");
+//                String test = VisitorsInfoBean.testJsonString1;
+//                test = test.trim();
+//                byte[] buffer = test.getBytes();
+//                DatagramSocket socket = new DatagramSocket();
+//                DatagramPacket packet = new DatagramPacket(buffer, buffer.length, local, SERVER_PORT_TEST);
+//                socket.send(packet);
+//                Log.e(TAG,"发送测试广播1");
+//                socket.close();
+//
+////                Thread.sleep(1000);
+////                test = VisitorsInfoBean.testJsonString2;
+////                test = test.trim();
+////                buffer = test.getBytes();
+////                DatagramSocket socket2 = new DatagramSocket();
+////                DatagramPacket packet2 = new DatagramPacket(buffer, buffer.length, local, SERVER_PORT_TEST);
+////                socket2.send(packet2);
+////                Log.e(TAG,"发送测试广播2");
+////                socket2.close();
+////
+////                Thread.sleep(1000);
+////                test = VisitorsInfoBean.testJsonString3;
+////                test = test.trim();
+////                buffer = test.getBytes();
+////                DatagramSocket socket3 = new DatagramSocket();
+////                DatagramPacket packet3 = new DatagramPacket(buffer, buffer.length, local, SERVER_PORT_TEST);
+////                socket3.send(packet3);
+////                Log.e(TAG,"发送测试广播3");
+////                socket3.close();
+////
+////                Thread.sleep(1000);
+////                test = VisitorsInfoBean.testJsonString3;
+////                test = test.trim();
+////                buffer = test.getBytes();
+////                DatagramSocket socket4 = new DatagramSocket();
+////                DatagramPacket packet4 = new DatagramPacket(buffer, buffer.length, local, SERVER_PORT_TEST);
+////                socket4.send(packet4);
+////                Log.e(TAG,"发送测试广播4");
+////                socket4.close();
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    };
 
     private Thread mConnectWorkerThread;
     private ConnectWorker mConnectWorker;
     private class ConnectWorker implements Runnable{
         @Override
         public void run() {
-            android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+
+            Log.d(TAG,"Connect worker Run()");
+            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
             try {
-                serverAddress = InetAddress.getByName(SERVER_IP_TEST);
-                System.out.println("Client: Start connecting\n");
-
-                socket = new DatagramSocket(SERVER_PORT_TEST);
-
+                serverAddress = InetAddress.getByName(serviceIp);
+                socket = new DatagramSocket(servicePort);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             Log.d(TAG,"启动心跳");
             mHeartBeatTimer = new Timer();
-            mHeartBeatTask = new HeartBeatTask();
+            TimerTask mHeartBeatTask = new HeartBeatTask();
             mHeartBeatTimer.schedule(mHeartBeatTask, 1000, 6*1000);
 
 //            Timer testT = new Timer();
 //            testT.schedule(mTestTimerTask, 2000);
 
-//            Timer timerT2 = new Timer();
-//            timerT2.schedule(mTestTimerTask2, 1000, 4000);
+//            mVisitorTestTimer = new Timer();
+//            VisitorTestTimerTask mVisitorTestTimerTask = new VisitorTestTimerTask();
+//            mVisitorTestTimer.schedule(mVisitorTestTimerTask, 1000,8000);
 
             // 接收UDP广播，有的手机不支持
             while (receiving) {
@@ -236,13 +277,17 @@ public class UDPConnectService extends Service {
             servicePort = SERVER_PORT_TEST;
         }
 
-        Log.d(TAG,"UDP连接参数 IP:"+serviceIp+",Port:"+servicePort);
+        Log.d(TAG,"UDP连接参数 IP:"+serviceIp+",Port:"+servicePort+",fuck:"+(mConnectWorkerThread==null));
         receiving = true;
 
         if (mConnectWorkerThread == null){
+            Log.d(TAG,"mConnectWorkerThread == null");
             mConnectWorkerThread = new Thread(mConnectWorker);
             mConnectWorkerThread.setPriority(3);
             mConnectWorkerThread.start();
+            Log.d(TAG,"ConnectWorkerThread.start()");
+        }else {
+            Log.d(TAG,"mConnectWorkerThread != null");
         }
 
         Log.e(TAG,"后台服务开启");
@@ -286,6 +331,14 @@ public class UDPConnectService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.e(TAG,"停止后台服务");
+        if (mVisitorTestTimer != null){
+            mVisitorTestTimer.cancel();
+        }
+        if (mHeartBeatTimer != null){
+            mHeartBeatTimer.cancel();
+        }
+        receiving = false;
         socket.close();
     }
 
@@ -302,13 +355,5 @@ public class UDPConnectService extends Service {
         intent.putExtra(MainActivity.VisitorArriveBroadcastReceiver.KEY_PERSON_INFO, personInfoJson);
         sendBroadcast(intent);
     }
-
-//    class VisitorArriveBean {
-//        public int cation;
-//        public List<VisitorBean> visitors;
-//    }
-//    class VisitorBean{
-//        String personId;
-//    }
 
 }

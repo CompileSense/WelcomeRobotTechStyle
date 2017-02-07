@@ -29,7 +29,7 @@
         android:layout_height="115.5dp" >
         <ImageView
             android:id="@+id/img_birthday_center"
-            android:src="@drawable/liux"
+            android:src="@drawable/ic_default_person"
             android:scaleType="centerCrop"
             android:layout_marginTop="15dp"
             android:layout_width="46dp"
@@ -38,7 +38,7 @@
             android:maxHeight="57dp"/>
         <TextView
             android:id="@+id/tv_birthday_center_name"
-            android:text="刘翔"
+            android:text="@string/name"
             android:textColor="#fff"
             android:textSize="4.5pt"
             android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
         android:layout_height="71.5dp">
         <ImageView
             android:id="@+id/img_birthday_left"
-            android:src="@drawable/guojj"
+            android:src="@drawable/ic_default_person"
             android:layout_gravity="left"
             android:scaleType="centerCrop"
             android:layout_marginTop="2dp"
@@ -72,7 +72,7 @@
         <TextView
             android:id="@+id/tv_birthday_left_name"
             android:layout_gravity="center_horizontal"
-            android:text="郭晶晶"
+            android:text="@string/name"
             android:textColor="#fff"
             android:textSize="3.5pt"
             android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
         android:layout_height="71.5dp">
         <ImageView
             android:id="@+id/img_birthday_right"
-            android:src="@drawable/yao"
+            android:src="@drawable/ic_default_person"
             android:layout_gravity="right"
             android:scaleType="centerCrop"
             android:layout_marginTop="2dp"
@@ -108,7 +108,7 @@
         <TextView
             android:id="@+id/tv_birthday_right_name"
             android:layout_gravity="center_horizontal"
-            android:text="姚明"
+            android:text="@string/name"
             android:textColor="#fff"
             android:textSize="3.5pt"
             android:layout_width="wrap_content"

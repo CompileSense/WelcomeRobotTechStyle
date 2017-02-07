@@ -22,6 +22,8 @@ public class UISettingHttpBean {
     private String notifyTitle;
     private String notifyContent;
     private String notifyDate;
+    private String notifyTime;
+    private String notifyDuration;
     private String geogBg;
     private String tDCode;
     private List<PersonBirthdayBean> personBirthday;
@@ -53,6 +55,22 @@ public class UISettingHttpBean {
 
     public void setNotifyTitle(String notifyTitle) {
         this.notifyTitle = notifyTitle;
+    }
+
+    public String getNotifyTime() {
+        return notifyTime;
+    }
+
+    public void setNotifyTime(String notifyTime) {
+        this.notifyTime = notifyTime;
+    }
+
+    public String getNotifyDuration() {
+        return notifyDuration;
+    }
+
+    public void setNotifyDuration(String notifyDuration) {
+        this.notifyDuration = notifyDuration;
     }
 
     public String getNotifyContent() {
@@ -110,6 +128,8 @@ public class UISettingHttpBean {
     public static class PersonBirthdayBean {
         private String personName;
         private String personBirth;
+        private String personImgPath;
+
 
         public void setPersonName(String personName) {
             this.personName = personName;
@@ -119,12 +139,20 @@ public class UISettingHttpBean {
             this.personBirth = personBirth;
         }
 
+        public void setPersonImgPath(String personImgPath) {
+            this.personImgPath = personImgPath;
+        }
+
         public String getPersonName() {
             return personName;
         }
 
         public String getPersonBirth() {
             return personBirth;
+        }
+
+        public String getPersonImgPath() {
+            return personImgPath;
         }
     }
 }

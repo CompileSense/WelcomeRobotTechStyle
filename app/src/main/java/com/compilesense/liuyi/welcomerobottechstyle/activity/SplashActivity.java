@@ -75,6 +75,10 @@ public class SplashActivity extends AppCompatActivity {
         bgBitmap = null;
     }
 
+    public void sendTestBroadcast(){
+
+    }
+
     private void checkPermissionAndDoNext(){
         checkPermissionAndDoNext(new DoNext() {
             @Override
@@ -93,6 +97,7 @@ public class SplashActivity extends AppCompatActivity {
                     Toast.makeText(SplashActivity.this, "未找到摄像头", Toast.LENGTH_LONG).show();
                 }else {
                     startConnectService(info.getServiceIp(), info.getServicePort());
+//                    Log.e(TAG,"不启动service");
                 }
                 cameraIP = info.getCanmeraIp();
                 cameraPort = info.getCanmeraPort();

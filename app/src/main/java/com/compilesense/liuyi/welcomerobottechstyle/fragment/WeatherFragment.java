@@ -64,12 +64,12 @@ public class WeatherFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initViews();
+        fetchWeather();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        fetchWeather();
     }
 
     void initViews(){
@@ -104,6 +104,10 @@ public class WeatherFragment extends Fragment {
 
 
     void fetchWeather(){
+        if (getContext()==null){
+            return;
+        }
+
         WeatherInfoRequest.getInstance().getInfo(getContext(), new WeatherInfoRequest.IFetchWeatherListener() {
             @Override
             public void FetchWeather(WeatherBean weatherBean) {

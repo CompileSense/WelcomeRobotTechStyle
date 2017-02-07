@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,10 +20,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.compilesense.liuyi.welcomerobottechstyle.R;
 import com.compilesense.liuyi.welcomerobottechstyle.fragment.BirthdayFragment;
+import com.compilesense.liuyi.welcomerobottechstyle.fragment.FaceFragment;
 import com.compilesense.liuyi.welcomerobottechstyle.fragment.NotifyFragment;
+import com.compilesense.liuyi.welcomerobottechstyle.fragment.RecordFragment;
 import com.compilesense.liuyi.welcomerobottechstyle.fragment.TimeFragment;
 import com.compilesense.liuyi.welcomerobottechstyle.fragment.VideoFragment;
 import com.compilesense.liuyi.welcomerobottechstyle.fragment.VisitorFragment;
@@ -29,6 +34,7 @@ import com.compilesense.liuyi.welcomerobottechstyle.javabean.UISettingBean;
 import com.compilesense.liuyi.welcomerobottechstyle.javabean.UISettingHttpBean;
 import com.compilesense.liuyi.welcomerobottechstyle.javabean.VisitorsInfoBean;
 import com.compilesense.liuyi.welcomerobottechstyle.network.FetchUISetting;
+import com.compilesense.liuyi.welcomerobottechstyle.service.UDPConnectService;
 import com.compilesense.liuyi.welcomerobottechstyle.util.Utils;
 import com.google.gson.Gson;
 
@@ -44,23 +50,22 @@ public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
     public static final String KEY_CAMERA_PARAMS = "cameraParameters";
 
-    FrameLayout flVisitorContainer;
+    private FrameLayout flVisitorContainer;
 
     //不想在程序中新初始化VisitorFragment实例,在这里实例化4个来复用。
-    VisitorFragment[] visitorFragmentsStaff = new VisitorFragment[2];
-    VisitorFragment[] visitorFragmentsStranger = new VisitorFragment[2];
-    int indexVF = -1;
+    private VisitorFragment[] visitorFragmentsStaff = new VisitorFragment[2];
+    private VisitorFragment[] visitorFragmentsStranger = new VisitorFragment[2];
+    private int indexVF = -1;
 
-    VisitorFragment visitorFragment;
-    VideoFragment videoFragment;
-    ImageView tdc;
-    FrameLayout videoFrameLayout,faceFrameLayout,notifyFragment,
+    private VideoFragment videoFragment;
+    private ImageView tdc;
+    private FrameLayout videoFrameLayout,faceFrameLayout,notifyFragment,
             timeFrameLayout,recordFrameLayout,weatherFrameLayout,birthdayFrameLayout;
 
-    List<View> decorViewList = new ArrayList<>();
-    boolean layoutStatus = true;
-    final float VIDEO_SCALE_ARG = 1.5f;
-    int disW; //屏幕宽度
+    private List<View> decorViewList = new ArrayList<>();
+    private boolean layoutStatus = true;//true 为本来样式,false 改变后
+    private final float VIDEO_SCALE_ARG = 1.5f;
+    private int disW; //屏幕宽度
 
     //visitor
     //来宾信息队列
@@ -72,10 +77,16 @@ public class MainActivity extends AppCompatActivity {
     private final static int SHOW_ADD = 2;
     private final static int SHOW_CHANGEING = 9;
 
-    BlockingQueue<String> personQueue = new ArrayBlockingQueue<>(MAX_PERSON_COUNT);
-    Thread mShowVisitorWorkerThread;
+    private BlockingQueue<String> personQueue = new ArrayBlockingQueue<>(MAX_PERSON_COUNT);
+    private Thread mShowVisitorWorkerThread;
     boolean showVisitorWorkerRunning;
     int showVisitorStatus = SHOW_NONE;//定义显示状态
+
+
+    private int recordCount = 0;
+    private TextView tvRecordCount;
+
+    private static final int MSG_UP_DATA_RECORD = 898;
 
     /**
      * 来宾广播接收机,后台 Service 接收到平台下发的来宾信息会发送广播,本 Receiver 接受该广播并展示来宾数据。
@@ -95,16 +106,18 @@ public class MainActivity extends AppCompatActivity {
             if (personInfo != null){
                 Log.e(TAG,"收到广播,类型:personInfo" + personInfo);
                 boolean offer = personQueue.offer(personInfo);
+                if (offer){
+                    recordCount++;
+                }
             }else if (uiSettingJsonString != null){
                 Log.e(TAG,"收到广播,类型:uiSetting");
                 UISettingBean uiSettingBean = new Gson().fromJson(uiSettingJsonString, UISettingBean.class);
-                Log.d(TAG,"onReceive WeatherBg:"+uiSettingBean.getMessage().getWeatherBg());
+                Log.d(TAG,"onReceive WeatherBg:"+ uiSettingBean.getMessage().getWeatherBg());
                 //TODO upDataViews(uiSettingBean);
             }
         }
     }
     VisitorArriveBroadcastReceiver mBroadcastReceiver = new VisitorArriveBroadcastReceiver();
-
 
     static public void startMainActivity(Context context, String[] cameraParams){
         Intent intent = new Intent(context, MainActivity.class);
@@ -127,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         ShowVisitorWorker showVisitorWorker = new ShowVisitorWorker();
         showVisitorWorkerRunning = true;
         mShowVisitorWorkerThread = new Thread(showVisitorWorker);
-        //TODO 优化该线程的优先级
         mShowVisitorWorkerThread.start();
     }
 
@@ -164,6 +176,20 @@ public class MainActivity extends AppCompatActivity {
         View imgScan = findViewById(R.id.img_scan_deco_text);
         decorViewList.add(tvScan);
         decorViewList.add(imgScan);
+
+        tvRecordCount = (TextView) findViewById(R.id.tv_record_count_number);
+
+        FetchUISetting.getInstance().fetchTodayRecord(this, new FetchUISetting.TodayRecordListner() {
+            @Override
+            public void get(final String todayRecord) {
+                tvRecordCount.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvRecordCount.setText(todayRecord);
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -185,18 +211,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver();
-//        finish();   //TODO 记得开启
+//        stopService();
+//        unregisterReceiver();
+        finish();   //TODO 记得开启
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        stopService();
+        unregisterReceiver();
     }
 
     void upDataViews(UISettingHttpBean bean){
         NotifyFragment notifyFragment = (NotifyFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_notify);
-        notifyFragment.setNotify(bean.getNotifyContent(),bean.getNotifyDate());
+        notifyFragment.setNotify(bean.getNotifyContent(),
+                bean.getNotifyDate(),
+                bean.getNotifyTime(),
+                bean.getNotifyDuration());
 
         BirthdayFragment birthdayFragment = (BirthdayFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_birthday);
         List<UISettingHttpBean.PersonBirthdayBean> personBirthdayBeen = bean.getPersonBirthday();
@@ -215,6 +247,11 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(mBroadcastReceiver);
     }
 
+    void stopService(){
+        Intent intent = new Intent(this, UDPConnectService.class);
+        stopService(intent);
+    }
+
     void initFragments(){
         visitorFragmentsStaff[0] = VisitorFragment.newInstance(VisitorFragment.VISITOR_TYPE_STAFF);
         visitorFragmentsStaff[1] = VisitorFragment.newInstance(VisitorFragment.VISITOR_TYPE_STAFF);
@@ -228,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
 
         //test
         if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-
+            recordCount++;//test
             if (flVisitorContainer.getVisibility() == View.GONE){
                 flVisitorContainer.setVisibility(View.VISIBLE);
                 visitorShowing = true;
@@ -237,8 +274,8 @@ public class MainActivity extends AppCompatActivity {
                         .beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_top, R.anim.slide_out_bottom)
                         .add(R.id.fl_visitor_container, visitorFragmentsStaff[indexVF])
-                        .commit();
-
+                        .commitNow();
+                visitorFragmentsStaff[indexVF].setPersonInfo(VisitorsInfoBean.testJsonString1);
             }else if (flVisitorContainer.getVisibility() == View.VISIBLE && visitorShowing) {
                 Log.d(TAG,"AddVisitor");
                 handAddVisitor(R.id.fl_visitor_container);
@@ -265,6 +302,11 @@ public class MainActivity extends AppCompatActivity {
                             .commit();
                 }
             }
+            //test
+            if (layoutStatus){
+                setRecordVisitorsInfo();
+                tvRecordCount.setText(String.valueOf(recordCount));
+            }
         }
 
         if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && !visitorShowing) {
@@ -282,14 +324,17 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .setCustomAnimations(R.anim.slide_in_top, R.anim.slide_out_bottom)
                     .replace(id,visitorFragmentsStaff[indexVF])//test
-                    .commit();
+                    .commitNow();
+            visitorFragmentsStaff[indexVF].setPersonInfo(VisitorsInfoBean.testJsonString2);
+
         }else {
             indexVF = 2;
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.slide_in_top, R.anim.slide_out_bottom)
                     .replace(id,visitorFragmentsStranger[indexVF-2])
-                    .commit();
+                    .commitNow();
+            visitorFragmentsStranger[indexVF-2].setPersonInfo(VisitorsInfoBean.testJsonString3);
         }
     }
 
@@ -363,12 +408,12 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .remove(visitorFragmentsStranger[indexVF - 2])
-                                .commit();
+                                .commitNowAllowingStateLoss();
                     }else {
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .remove(visitorFragmentsStaff[indexVF])
-                                .commit();
+                                .commitNowAllowingStateLoss();
                     }
                 }
             }
@@ -547,6 +592,14 @@ public class MainActivity extends AppCompatActivity {
         return new ObjectAnimator[]{scale};
     }
 
+
+    private void setRecordVisitorsInfo(){
+        RecordFragment recordFragment = (RecordFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_record);
+        recordFragment.setPersons();
+        FaceFragment faceFragment = (FaceFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_face);
+        faceFragment.setFace();
+    }
+
     private class ShowVisitorWorker implements Runnable{
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -596,8 +649,15 @@ public class MainActivity extends AppCompatActivity {
                 showPersonCount --;
             }
             finishVisitorShow();
+            if (layoutStatus){
+                getWindow().getDecorView().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setRecordVisitorsInfo();
+                        tvRecordCount.setText(String.valueOf(recordCount));
+                    }
+                });
+            }
         }
     }
-
-
 }

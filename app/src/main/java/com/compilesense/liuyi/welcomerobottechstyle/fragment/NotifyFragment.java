@@ -46,10 +46,10 @@ public class NotifyFragment extends Fragment {
         tvEta = (TextView) getView().findViewById(R.id.tv_notify_eta_value);
     }
 
-    public void setNotify(String content,String dateS){
+    public void setNotify(String content,String dateS,String time, String duration){
         tvContent.setText(content);
         tvDate.setText(dateS);
-        tvTime.setText("null");
-        tvEta.setText("null");
+        tvTime.setText(time);
+        tvEta.setText(duration);
     }
 }
